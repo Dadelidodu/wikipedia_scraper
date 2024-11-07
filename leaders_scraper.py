@@ -2,20 +2,20 @@ import time
 import requests
 from bs4 import BeautifulSoup
 
-# Set session
-
-session = requests.Session()
-
 # Setting root url and verifying if response status is 200
 
 root_url = 'https://country-leaders.onrender.com'
 endpoint = 'status'
-response = session.get(root_url + '/' + endpoint)
+response = requests.get(root_url + '/' + endpoint)
 
 if response.status_code == 200:
     print('Response is valid: ', response.status_code,'\n')
 else:
     print('Response failed: ', response.status_code,'\n')
+
+# Set session
+
+session = requests.Session()
 
 # Set the cookies_url and cookies variable + checking cookie_response
     
