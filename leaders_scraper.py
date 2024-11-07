@@ -13,24 +13,27 @@ if response.status_code == 200:
 else:
     print('Response failed: ', response.status_code,'\n')
 
+# Set session
+
+session = requests.Session()
+
 # Set the cookies_url and cookies variable + checking cookie_response
     
 cookie_url = root_url + '/cookie'
-cookie_response = requests.get(cookie_url)
-cookies = requests.get(cookie_url).cookies
+cookie_response = session.get(cookie_url)
+cookies = cookie_response.cookies
 
 # Set the countries_url and countries variable 
     
 countries_url = root_url + '/countries'
-countries_response = requests.get(countries_url, cookies=cookies)
+countries_response = session.get(countries_url, cookies=cookies)
 countries = countries_response.json()
 
-    
 # Defining the get_first_paragraph function 
 
-def get_first_paragraph(wiki_url: str, session=requests.Session()):
+def get_first_paragraph(wiki_url: str, session=session):
     
-    response = requests.get(wiki_url)
+    response = session.get(wiki_url)
     soup = BeautifulSoup(response.content, "html.parser")
 
     paragraphs = []
@@ -59,14 +62,14 @@ def get_leaders():
         
         leaders_url = root_url + '/leaders'
         parameters = {'country': country}
-        leaders_per_country_response = requests.Session().get(leaders_url, cookies=cookies, params=parameters)
+        leaders_per_country_response = session.get(leaders_url, cookies=cookies, params=parameters)
         
         if leaders_per_country_response == 200:
             leaders_per_country[country] = leaders_per_country_response.json()
         
         else:
-            new_cookies = requests.get(cookie_url).cookies
-            leaders_per_country[country] = requests.Session().get(leaders_url, cookies=new_cookies, params=parameters).json()
+            new_cookies = session.get(cookie_url).cookies
+            leaders_per_country[country] = session.get(leaders_url, cookies=new_cookies, params=parameters).json()
 
         for index, leader in enumerate(leaders_per_country[country]):
                 
