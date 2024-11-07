@@ -4,8 +4,8 @@ from leaders_scraper import get_first_paragraph, get_leaders
 
 def extract_json():
     leaders_per_country = get_leaders()
-    with open('leaders.json', 'w') as json_file:
-        json.dump(leaders_per_country, json_file)
+    with open('leaders.json', 'w', encoding="utf-8") as json_file:
+        json.dump(leaders_per_country, json_file, ensure_ascii=False)
 
 start_time = time.time()
 extract_json()
